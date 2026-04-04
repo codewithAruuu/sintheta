@@ -502,26 +502,23 @@ function updateCart() {
     let total = 0;
     
     cart.forEach((item, index) => {
+        // We add a 'Remove' button with the specific index of the item
         list.innerHTML += `
-            <li style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                ${item.name} - ₹${item.price}
-                <span onclick="removeFromCart(${index})" style="color:red; cursor:pointer; font-weight:bold;">✕</span>
+            <li>
+                ${item.name} - ₹${item.price} 
+                <button onclick="removeFromCart(${index})" style="color:red; background:none; border:none; cursor:pointer; margin-left:10px;">[Remove]</button>
             </li>`;
         total += item.price;
     });
-
-    // Bundle Discount Logic
-    let finalTotal = total;
-    if (cart.length >= 3) {
-        let discount = total * 0.25;
-        finalTotal = total - discount;
-        list.innerHTML += `<li style="color:green; font-weight:bold; border-top:1px solid #ddd; padding-top:5px;">
-            3+ Item Discount (25%): -₹${discount.toFixed(0)}
-        </li>`;
-    }
     
     count.innerText = cart.length;
-    totalDisplay.innerText = finalTotal.toFixed(0);
+    totalDisplay.innerText = total;
+}
+
+function removeFromCart(index) {
+    // This removes 1 item at the specific position (index)
+    cart.splice(index, 1); 
+    updateCart(); // Refresh the list so the item disappears
 }
 function toggleCart() {
     const modal = document.getElementById('cart-modal');
