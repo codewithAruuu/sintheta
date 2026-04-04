@@ -134,9 +134,88 @@
             color: #777;
             line-height: 1.6;
         }  
+
+.navbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 5%; border-bottom: 1px solid #eee; sticky; top: 0; z-index: 1000; }
+.dropbtn { background: none; border: none; font-family: 'Georgia', serif; font-size: 1rem; cursor: pointer; color: #d4af37; font-weight: bold; }
+.dropdown-content { display: none; position: absolute; background: #fff; box-shadow: 0 8px 16px rgba(0,0,0,0.1); min-width: 160px; z-index: 1; }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; }
+.dropdown-content a:hover { background: #fdf8f0; }
+
+
+.reviews { padding: 40px; background: #fcfaf8; text-align: center; }
+.review-box { max-width: 800px; margin: 0 auto; font-style: italic; }
+.stars {
+    color: #d4af37; /* Gold stars */
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+.rating-text {
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: 5px;
+}
+
+#cart-icon {
+    position: fixed; bottom: 20px; right: 20px; background: #d4af37; color: white;
+    padding: 15px 20px; border-radius: 50px; cursor: pointer; z-index: 2000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-weight: bold;
+}
+#cart-modal {
+    position: fixed; bottom: 80px; right: 20px; width: 300px; background: white;
+    border: 1px solid #ddd; padding: 20px; display: none; z-index: 2000;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 10px;
+}
+#cart-items { list-style: none; padding: 0; max-height: 200px; overflow-y: auto; }
+#cart-items li { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 0.9rem; }
+
+.promo-bar {
+    background: #d4af37; /* Gold color */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
   </style>
 </head>
 <body>
+
+<div id="cart-icon" onclick="toggleCart()">
+    🛒 <span id="cart-count">0</span>
+</div>
+
+<div id="cart-modal">
+    <h3>Your Selection</h3>
+    <ul id="cart-items"></ul>
+    <hr>
+    <p>Total: ₹<span id="cart-total">0</span></p>
+    <button onclick="sendToWhatsApp()" class="btn-buy" style="width:100%">Order via WhatsApp</button>
+    <button onclick="toggleCart()" style="background:none; border:none; color:red; cursor:pointer; margin-top:10px;">Close</button>
+</div>
+<div class="promo-bar">
+    ✨ SPECIAL OFFER: Buy any 3 items and get 25% OFF on your total bill! ✨
+</div>
+<nav class="navbar">
+
+    <nav class="navbar">
+    <div class="dropdown">
+        <button class="dropbtn">Categories ▼</button>
+        <div class="dropdown-content">
+            <a href="javascript:void(0)" onclick="filterCategory('all')">All Products</a>
+            <a href="javascript:void(0)" onclick="filterCategory('bangles')">Bangles</a>
+            <a href="javascript:void(0)" onclick="filterCategory('earrings')">Earrings</a>
+            <a href="javascript:void(0)" onclick="filterCategory('necklaces')">Necklaces</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <input type="text" id="myInput" onkeyup="searchFunction()" placeholder="Search jewelry..">
+    </div>
+</nav>    </div>
+    
+</nav>
 
 <header>
     <img src="logo.png" alt="SINTHETA Logo" class="logo">
@@ -147,160 +226,194 @@
 <div class="container">
 
 
-    <div class="product-card">
-        <img src="bangel.png" alt="Multi-color Bangles">
-        <h3>MULTI-COLOR BANGLES</h3>
-        <p class="price">₹379</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Multicolor+Bangles" class="btn-buy">Buy Now on WhatsApp</a>
-    </div>
+    <div class="product-card" data-category="bangles">
+    <img src="bangel.png" alt="Bangles">
+    <h3>MULTI-COLOR BANGLES</h3>
+    <div class="stars">★★★★★</div>
+    <p class="price">₹379</p>
+    <button class="btn-buy" onclick="addToCart('Multi-color Bangles', 379)">Add to Cart</button>
+</div>
 
-
-    <div class="product-card">
+    <div class="product-card" data-category="earrings">
         <img src="KASHMIRI.PNG.png" alt="Nepali Earrings(Blue)">
         <h3>NEPALI EARRINGS BLUE</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹379</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Nepali+Earrings+blue" class="btn-buy">Buy Now on WhatsApp</a>
-     </div>
+       <button class="btn-buy" onclick="addToCart('Nepali Earrings(Blue)', 379)">Add to Cart</button>
+</div>
 
 
-<div class="product-card">
+
+<div class="product-card" data-category="earrings">
         <img src="0001.png.jpeg" alt="Nepali Earrings Pink Gold">
         <h3>NEPALI EARRINGS PINK GOLD</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹349</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Nepali+Earrings+Pink+Gold" class="btn-buy">Buy Now on WhatsApp</a>
+         <button class="btn-buy" onclick="addToCart('Nepali Earrings Pink Gold', 379)">Add to Cart</button>
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0002.png.jpeg" alt="Nepali Earrings White">
         <h3>NEPALI EARRINGS WHITE</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹379</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Nepali+Earrings+White" class="btn-buy">Buy Now on WhatsApp</a>
+       <button class="btn-buy" onclick="addToCart('Nepali Earrings White', 379)">Add to Cart</button>
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0003.png.jpeg" alt="Nepali Earrings Pink Silver">
         <h3>NEPALI EARRINGS PINK SILVER</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹349</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Nepali+Earrings+Pink+silver" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Nepali Earrings Pink Silver', 379)">Add to Cart</button>
      </div>
 
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0004.jpeg" alt="Pearl hoop Chandelier">
         <h3>PEARL HOOP CHANDELIER</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹79</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+pearl+hoop+chandelier" class="btn-buy">Buy Now on WhatsApp</a>
+                <button class="btn-buy" onclick="addToCart('Pearl hoop Chandelier', 79)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0005.jpeg" alt="Crystal Rhombus Drop">
         <h3>CRYSTAL RHOMBUS DROP</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹79</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+crystal+rhombus+drop" class="btn-buy">Buy Now on WhatsApp</a>
+         <button class="btn-buy" onclick="addToCart('Crystal Rhombus Drop', 79)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0006.jpeg" alt="Enamel Daisy Pearl Drops">
         <h3>ENAMEL DAISY PEARL DROPS</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹89</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Enamel+Daisy+Peal+Drop" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Enamel Daisy Pearl Drops', 89)">Add to Cart</button>
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0007.jpeg" alt="Glass Blossom Pearl Cascades">
         <h3>GLASS BLOSSOM PEARL CASCADES</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹89</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Glass+blossom+pearl+cascades" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Glass Blossom Pearl Cascades', 89)">Add to Cart</button>
+
      </div>
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0008.jpeg" alt="Cherry Blossom pearl cluster">
         <h3>CHERRY BLOSSOM PEARL CLUSTER</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹89</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Cherry+blossom+pearl+cluster" class="btn-buy">Buy Now on WhatsApp</a>
+       
+        <button class="btn-buy" onclick="addToCart('Cherry Blossom pearl cluster', 89)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0009.jpeg" alt="Frosted Petal Drop">
         <h3>FROSTED PETAL DROP</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹79</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Frosted+petal+drop" class="btn-buy">Buy Now on WhatsApp</a>
+                <button class="btn-buy" onclick="addToCart('Frosted Petal Drop', 79)">Add to Cart</button>
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0010.jpeg" alt="Infinity Bead & Cat-Eye Watch">
         <h3>INFINITY BEAD & CAT-EYE WATCH CUM BRACELET</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹199</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Infinity+bead+&+cat+eye+watch+cum+bracelet" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Infinity Bead & Cat-Eye Watch', 199)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0011.jpeg" alt="Baguette and Halo Floral Watch">
         <h3>BAGUETTE AND HALO FLORAL WATCH CUM BRACELET</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹199</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Baguette+and+halo+floral+watch+cum+bracelet" class="btn-buy">Buy Now on WhatsApp</a>
+       <button class="btn-buy" onclick="addToCart('Baguette and Halo Floral Watch', 199)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0012.jpeg" alt="Marquise Crystal Leaf Watch cum bracelet">
         <h3>MARQUISE CRYSTAL LEAF WATCH CUM BRACELET</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹199</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Marquise+crystal+leaf+watch+cum+bracelet" class="btn-buy">Buy Now on WhatsApp</a>
+       <button class="btn-buy" onclick="addToCart('Marquise Crystal Leaf Watch cum bracelet', 199)">Add to Cart</button>
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0013.jpeg" alt="Geometric Silver Toned Crystal Chandbalis">
         <h3>GEOMETRIC SILVER TONED CRYSTAL CHANDBALIS</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹179</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Geometric+Silver+Toned+Crystal+Chandbalis" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Geometric Silver Toned Crystal Chandbalis', 179)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0014.jpeg" alt="Temple Style Antique Jhumkas">
         <h3>TEMPLE STYLE ANTQUE JHUMKAS</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹179</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Temple+Style+Antique+Jhumkas" class="btn-buy">Buy Now on WhatsApp</a>
+       <button class="btn-buy" onclick="addToCart('Temple Style Antique Jhumkas', 179)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0015.jpeg" alt="Multicolored Chandbali Jhumkas">
         <h3>MULTICOLOR CHANDBALI JHUMKAS</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹179</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Multicolored+Chandbali+Jhumkas" class="btn-buy">Buy Now on WhatsApp</a>
+          <button class="btn-buy" onclick="addToCart('Multicolored Chandbali Jhumkas', 179)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0016.jpeg" alt="Oxidised silver Peacock Earrings">
         <h3>OXIDISED SILVER PEACOCK EARRINGS</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹179</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Oxidised+silver+Peacock+Earrings" class="btn-buy">Buy Now on WhatsApp</a>
+         <button class="btn-buy" onclick="addToCart('Oxidised silver Peacock Earrings', 179)">Add to Cart</button>
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0017.jpeg" alt="Antique Gold Peacock Jhumkas">
         <h3>ANTIQUE GOLD PEACOCK JHUMKAS</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹179</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Antique+Gold+Peacock+Jhumkas" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Antique Gold Peacock Jhumkas', 179)">Add to Cart</button>
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0018.jpeg" alt="Celestial Starburst Pearl Drops">
         <h3>CELESTIAL STARBURST PEARL DROPS</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹179</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Celestial+Starburst+Pearl+Drops" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Celestial Starburst Pearl Drops', 179)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0019.jpeg" alt="Iridescent Heart Cascades">
         <h3>IRIDESCENT HEART CASCADES</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹179</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Iridescent+Heart+Cascades" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Iridescent Heart Cascades', 179)">Add to Cart</button>
+
      </div>
 
-<div class="product-card">
+<div class="product-card" data-category="earrings">
         <img src="0020.jpeg" alt="Rhinestone Tessel Earrings">
         <h3>RHINESTONE TESSEL EARRINGS</h3>
+<div class="stars">★★★★★</div>
         <p class="price">₹179</p>
-        <a href="https://wa.me/919051235298?text=I+want+this+one+,sintheta:+Rhinestone+Tessel+Earrings" class="btn-buy">Buy Now on WhatsApp</a>
+        <button class="btn-buy" onclick="addToCart('Rhinestone Tessel Earrings', 179)">Add to Cart</button>
      </div>
 
 
@@ -339,11 +452,116 @@
     <p class="brand-vision">Bringing elegance and exquisite craftsmanship from Nepal to your doorstep.</p>
 </section>
 
+
+<section class="reviews">
+    <h2>What Our Customers Say</h2>
+    <div class="review-box">
+        <p>"The Nepali earrings are stunning! Fast delivery to Hooghly." - <strong>Priyanka S.</strong></p>
+        <p>"High quality bangles. Worth the price!" - <strong>Rahul M.</strong></p>
+    </div>
+</section>
+
 <footer>
     <h3>Follow Us</h3>
     <a href="https://www.instagram.com/sintheta_jewellery/" target="_blank" class="social-link">Instagram</a>
     <p style="margin-top:20px; font-size: 0.8rem; color: #999;">&copy; 2026 SINTHETA</p>
 </footer>
 
+<script>
+function searchFunction() {
+    var input, filter, container, cards, h3, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    container = document.getElementsByClassName("container")[0];
+    cards = container.getElementsByClassName("product-card");
+
+    for (i = 0; i < cards.length; i++) {
+        h3 = cards[i].getElementsByTagName("h3")[0];
+        txtValue = h3.textContent || h3.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            cards[i].style.display = "";
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+}
+
+let cart = [];
+
+function addToCart(name, price) {
+    cart.push({ name, price });
+    updateCart();
+    }
+
+function updateCart() {
+    const list = document.getElementById('cart-items');
+    const count = document.getElementById('cart-count');
+    const totalDisplay = document.getElementById('cart-total');
+    
+    list.innerHTML = "";
+    let total = 0;
+    
+    cart.forEach((item, index) => {
+        list.innerHTML += `
+            <li style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                ${item.name} - ₹${item.price}
+                <span onclick="removeFromCart(${index})" style="color:red; cursor:pointer; font-weight:bold;">✕</span>
+            </li>`;
+        total += item.price;
+    });
+
+    // Bundle Discount Logic
+    let finalTotal = total;
+    if (cart.length >= 3) {
+        let discount = total * 0.25;
+        finalTotal = total - discount;
+        list.innerHTML += `<li style="color:green; font-weight:bold; border-top:1px solid #ddd; padding-top:5px;">
+            3+ Item Discount (25%): -₹${discount.toFixed(0)}
+        </li>`;
+    }
+    
+    count.innerText = cart.length;
+    totalDisplay.innerText = finalTotal.toFixed(0);
+}
+function toggleCart() {
+    const modal = document.getElementById('cart-modal');
+    modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+}
+
+function sendToWhatsApp() {
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    
+    let total = document.getElementById('cart-total').innerText;
+    let message = "I want to order these from SINTHETA:%0A%0A";
+    cart.forEach(item => {
+        message += `- ${item.name} (₹${item.price})%0A`;
+    });
+    
+    if (cart.length >= 3) {
+        message += "%0A(Applied 25% Bundle Discount!)";
+    }
+    
+    message += `%0A%0A*Final Total: ₹${total}*`;
+    window.open(`https://wa.me/919051235298?text=${message}`, '_blank');
+}
+function filterCategory(category) {
+    // Select all product cards
+    var cards = document.getElementsByClassName("product-card");
+    
+    for (var i = 0; i < cards.length; i++) {
+        // Get the category tag we added in Step 1
+        var itemCategory = cards[i].getAttribute("data-category");
+
+        if (category === 'all' || itemCategory === category) {
+            cards[i].style.display = "block"; // Show match
+        } else {
+            cards[i].style.display = "none";  // Hide others
+        }
+    }
+}
+</script>
 </body>
 </html>
